@@ -6,11 +6,8 @@ readme = "README.md"
 authors = [
     { name = "SeshuTarapatla", email = "seshu.tarapatla@gmail.com" }
 ]
-requires-python = ">=3.6"
-dependencies = [
-    "rich>=10.11.0",
-    "uiautomator2>=0.2.3",
-]
+requires-python = ">=3.12"
+dependencies = []
 
 [project.scripts]
 my-modules = "my_modules:main"
@@ -21,6 +18,5 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
-    "ipykernel>=5.1.4",
-    "ipywidgets>=7.8.5",
+    "ipykernel>=6.29.5",
 ]

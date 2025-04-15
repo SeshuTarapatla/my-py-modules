@@ -1,7 +1,12 @@
-# Folders
-.venv
+# build
 dist
+
+# cache
 __pycache__
 
-# Files
-test.*
+# virtual environment
+.venv
+
+# dev/test files
+test*
+*.ipynb

@@ -1,2 +1,2 @@
 # my-py-modules
-My custom Python modules.  
+Reusable python classes and functions under single module `my_modules`.
