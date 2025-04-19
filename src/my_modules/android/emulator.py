@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import cast
 
-from adbutils import AdbError, adb, AdbDevice # type: ignore
+from adbutils import AdbError, adb
 import pyautogui as ag
 import pygetwindow as gw
 
