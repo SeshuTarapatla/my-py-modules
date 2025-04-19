@@ -12,6 +12,7 @@ dependencies = [
     "pyautogui>=0.9.54",
     "pygetwindow>=0.0.9",
     "rich>=14.0.0",
+    "uiautomator2>=3.2.9",
 ]
 
 [project.scripts]

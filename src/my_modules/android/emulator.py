@@ -5,6 +5,7 @@ from adbutils import AdbError, adb, AdbDevice # type: ignore
 import pyautogui as ag
 import pygetwindow as gw
 
+from my_modules.android.automator import Device
 from my_modules.logger import status_decorator
 from my_modules.process import spawn_windows_process, wait_in_loop
 
@@ -57,17 +58,16 @@ def start(emulator: str = "emulator", snap_to_zone: bool = True) -> None:
             ag.keyUp("shift")
     # wait for device to boot
     started_at = datetime.now()
-    device = cast(AdbDevice, None)
+    device = cast(Device, None)
     while not device:
         try:
             device = get_emulator()
         except AdbError:
             wait_in_loop(started_at, err_message="Emulator not booted")
-    while not (device.getprop("sys.boot_completed") == "1" and device.getprop("init.svc.bootanim") == "stopped"):
-        wait_in_loop(started_at, err_message="Emulator not booted")
+    device.init()
 
 
-def get_emulator() -> AdbDevice:
+def get_emulator() -> Device:
     """Return AdbDevice object of the emulator.
 
     Raises:
@@ -79,7 +79,7 @@ def get_emulator() -> AdbDevice:
     """
     emulators = list(filter(lambda x: str(x.serial).startswith("emulator"), adb.device_list()))
     if (total := len(emulators)) == 1:
-        return emulators[0]
+        return Device(str(emulators[0].serial))
     elif total == 0:
         raise AdbError("Can't find any android emulator")
     else:
