@@ -1,5 +1,6 @@
 from functools import wraps
 from typing import Any, Callable
+
 from rich.console import Console
 
 __all__ = ["console", "log"]
@@ -29,8 +30,8 @@ def status_decorator(message: str) -> Callable:
 
 
 class log:
-    """Log methods
-    """
+    """Log methods"""
+    
     @staticmethod
     def info(message: str) -> None:
         """Log info message."""
@@ -40,3 +41,8 @@ class log:
     def warn(message: str) -> None:
         """Log warning message."""
         console.print(f"[[yellow]WARN[/]]  : {message}")
+
+    @staticmethod
+    def error(message: str) -> None:
+        """Log warning message."""
+        console.print(f"[[red]Error[/]] : {message}")

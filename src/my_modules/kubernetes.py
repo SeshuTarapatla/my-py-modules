@@ -7,7 +7,6 @@ from typing import Literal
 from my_modules.logger import console
 from my_modules.process import wait_in_loop
 
-
 RANCHER = "Rancher Desktop.exe"
 
 

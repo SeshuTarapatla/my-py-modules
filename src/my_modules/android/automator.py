@@ -1,7 +1,7 @@
 from datetime import datetime
 from pathlib import Path
-from typing import override
-from adbutils import adb, device
+
+from adbutils import adb
 from adbutils._device import AdbDevice  # type: ignore
 from uiautomator2 import Device as _Device
 from uiautomator2._selector import UiObject
@@ -27,6 +27,7 @@ class Device(_Device):
         while not (self.adb.getprop("sys.boot_completed") == "1" and self.adb.getprop("init.svc.bootanim") == "stopped"):
             wait_in_loop(started_at, err_message="Emulator not booted")
         super().__init__(self.serial)
+        self.width, self.height = self.window_size()
     
     def __kwargs__(self, resourceId: str = "", text: str = "", **kwargs) -> dict[str, str]:
         """Helper function to handle optional kwargs."""
@@ -78,3 +79,40 @@ class Device(_Device):
             # if yes replace it with last but one element
             last = elements[-2]
         self.swipe(*last.center(), *first.center(), duration=duration)
+    
+    def get_text(self, resourceId: str, default: str = "") -> str:
+        """Get text of a given resourceId element if exists else return default.
+        """
+        if self(resourceId).exists:
+            return self(resourceId).get_text()
+        else:
+            return default
+    
+    def animation_wait(self, timeout: float = 10) -> None:
+        """Wait in loop until device animation completes."""
+        started_at = datetime.now()
+        last = None
+        while (curr := self.screenshot()) != last:
+            last = curr
+            wait_in_loop(started_at, buffer=0.2, wait_limit=timeout, err_message="Invalid animation")
+    
+    def proper_child(self, child: UiObject, parent: UiObject) -> bool:
+        """Checks if child element is a proper child of parent element by checking if child is inside bounds of parent.
+
+        Args:
+            child (UiObject): child element.
+            parent (UiObject): parent element.
+
+        Returns:
+            bool: if child or not.
+        """
+        cx1, cy1, cx2, cy2 = child.bounds()
+        px1, py1, px2, py2 = parent.bounds()
+
+        return (
+            cx1 >= px1 and
+            cy1 >= py1 and
+            cx2 <= px2 and
+            cy2 <= py2
+        )
+    

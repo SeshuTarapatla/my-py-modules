@@ -1,9 +1,9 @@
 from datetime import datetime
 from typing import cast
 
-from adbutils import AdbError, adb
 import pyautogui as ag
 import pygetwindow as gw
+from adbutils import AdbError, adb
 
 from my_modules.android.automator import Device
 from my_modules.logger import status_decorator
