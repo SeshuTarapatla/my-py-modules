@@ -33,16 +33,16 @@ class log:
     """Log methods"""
     
     @staticmethod
-    def info(message: str) -> None:
+    def info(message: str | Any) -> None:
         """Log info message."""
         console.print(f"[[blue]INFO[/]]  : {message}")
 
     @staticmethod
-    def warn(message: str) -> None:
+    def warn(message: str | Any) -> None:
         """Log warning message."""
         console.print(f"[[yellow]WARN[/]]  : {message}")
 
     @staticmethod
-    def error(message: str) -> None:
+    def error(message: str | Any) -> None:
         """Log warning message."""
         console.print(f"[[red]Error[/]] : {message}")
