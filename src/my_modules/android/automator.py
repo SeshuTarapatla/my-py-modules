@@ -69,6 +69,7 @@ class Device(_Device):
 
         elements = self.get_elements(resourceId)
         if len(elements) == 1:
+            return
             raise Exception("Not enough elements to scroll.")
         first = elements[0]
         last = elements[-1]
