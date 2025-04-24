@@ -7,7 +7,7 @@ __all__ = ["console", "log"]
 
 
 # Common console for all rich printing
-console = Console()
+console = Console(highlight=False)
 
 
 def status_decorator(message: str) -> Callable:
