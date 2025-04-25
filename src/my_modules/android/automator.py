@@ -81,10 +81,10 @@ class Device(_Device):
             last = elements[-2]
         self.swipe(*last.center(), *first.center(), duration=duration)
     
-    def get_text(self, resourceId: str, default: str = "") -> str:
+    def get_text(self, resourceId: str, default: str = "", timeout: int = 3) -> str:
         """Get text of a given resourceId element if exists else return default.
         """
-        if self(resourceId).exists:
+        if self(resourceId).wait(timeout=timeout):
             return self(resourceId).get_text()
         else:
             return default
@@ -95,7 +95,7 @@ class Device(_Device):
         last = None
         while (curr := self.screenshot()) != last:
             last = curr
-            wait_in_loop(started_at, buffer=0.2, wait_limit=timeout, err_message="Invalid animation")
+            wait_in_loop(started_at, buffer=0.1, wait_limit=timeout, err_message="Invalid animation")
     
     def proper_child(self, child: UiObject, parent: UiObject) -> bool:
         """Checks if child element is a proper child of parent element by checking if child is inside bounds of parent.

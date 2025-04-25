@@ -2,6 +2,8 @@ from datetime import datetime
 from subprocess import DEVNULL, STARTF_USESHOWWINDOW, STARTUPINFO, SW_HIDE, Popen
 from time import sleep
 
+from win10toast import ToastNotifier
+
 
 def wait_in_loop(
     started_at: datetime,
@@ -45,3 +47,7 @@ def spawn_windows_process(
         args=args, shell=True, stdout=DEVNULL, stderr=DEVNULL, startupinfo=startupinfo
     )
     return process
+
+def windows_notify(title: str = "Python", msg: str = "Notification") -> None:
+    ToastNotifier().show_toast(title, msg, threaded=True)
+    
