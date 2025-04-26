@@ -2,6 +2,9 @@
 dist
 venv
 .venv
+__pycache__
+
 
 # files
 test.*
+uv.lock
