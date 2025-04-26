@@ -1,10 +1,11 @@
 from typing import Any
+
 from rich.console import Console
 
 __all__ = ["console", "log"]
 
 
-# common console for all rich priting
+# common console for all rich printing
 console: Console = Console(highlight=False)
 
 

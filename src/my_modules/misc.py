@@ -1,6 +1,8 @@
 from datetime import datetime
 from time import sleep
 
+__all__ = ["wait_in_loop"]
+
 
 def wait_in_loop(
     started_at: datetime,
