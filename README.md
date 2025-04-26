@@ -5,7 +5,12 @@ All my custom utility classes and reusable python modules under single package.
 1. Logger: A rich logger and console.
 2. Kubernetes: Rancher related functions.
 3. Misc: Collection of miscellaneous functions.
-4. Postgres: Connection details for postgres.
+4. Process: Windows process or python flow control.
+5. Postgres: Connection details for postgres.
+6. Android: ADB, UiAutomator & Emulator related.
+   1. device: Enchanced version of uiautomator2 device.
+   2. emulator: Android SDK emulator control.
+
 
 
 ## Emulator

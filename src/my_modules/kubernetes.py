@@ -7,7 +7,7 @@ from time import sleep
 from typing import Literal
 
 from my_modules.logger import console
-from my_modules.misc import wait_in_loop
+from my_modules.process import wait_in_loop
 
 __all__ = ["Rancher", "pod_running", "get_json"]
 
