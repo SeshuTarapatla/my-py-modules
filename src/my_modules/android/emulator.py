@@ -29,7 +29,7 @@ def start(emulator: str = "emulator", snap_to_zone: bool = True) -> None:
     # start the emulator if not running:    
     if not emu_window():
         spawn_windows_process(
-            f"emulator -avd {emulator} -gpu host -no-audio",
+            f"emulator -avd {emulator} -gpu host -no-audio -no-snapshot",
             minimized=True,
             title="emulator-console",
         )
