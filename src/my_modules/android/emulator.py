@@ -9,6 +9,8 @@ from pygetwindow import Win32Window, getWindowsWithTitle
 from my_modules.android.device import Device
 from my_modules.process import spawn_windows_process, wait_in_loop
 
+__all__ = ["Emulator"]
+
 
 class Emulator:
     """Emulator class to control avd instance."""
