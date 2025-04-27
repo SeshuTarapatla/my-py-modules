@@ -3,6 +3,7 @@ from subprocess import check_output, run
 from time import sleep
 from typing import cast
 
+from my_modules.logger import console, log
 import pyautogui as ag
 from pygetwindow import Win32Window, getWindowsWithTitle
 
@@ -27,36 +28,47 @@ class Emulator:
         self.console: str = "emulator-console"
         self.window: str = f"Android Emulator - {self.serial.replace('-', ':')}"
 
-    def start(self, buffer: float = 10):
+    def start(self, buffer: float = 5):
         """Start emulator as a separate process.
 
         Args:
-            buffer (float, optional): Buffer wait after boot. Defaults to 10.
+            buffer (float, optional): Buffer wait after boot. Defaults to 5.
         """
         if self._is_running():
             return
-        spawn_windows_process(
-            cmd=f"emulator -avd {self.avd} -no-audio -gpu host -no-snapshot",
-            title=self.console,
-            minimized=True,
-        )
-        started_at = datetime.now()
-        while not self._windows_exists():
-            wait_in_loop(started_at, wait=180, err_msg="Failed to start the emulator.")
-        self.snap_to_zone()
-        while not self._boot_complete():
-            wait_in_loop(started_at, wait=150, err_msg="Failed to start the emulator.")
-        sleep(buffer)
+        with console.status("Starting emulator"):
+            spawn_windows_process(
+                cmd=f"emulator -avd {self.avd} -no-audio -gpu host -no-snapshot",
+                title=self.console,
+                minimized=True,
+            )
+            started_at = datetime.now()
+            while not self._windows_exists():
+                wait_in_loop(started_at, wait=180, err_msg="Failed to start the emulator.")
+            try:
+                self.snap_to_zone()
+            except Exception:
+                log.warn("Failed to snap the emulator")
+            while not self._boot_complete():
+                wait_in_loop(started_at, wait=150, err_msg="Failed to start the emulator.")
+            sleep(buffer)
 
     def stop(self) -> None:
-        """Stop running emulator instance."""
-        if emulator := self._emulator_window():
-            emulator.close()
-        if console := self._console_window():
-            console.close()
-        started_at = datetime.now()
-        while self._windows_exists():
-            wait_in_loop(started_at, wait=60, err_msg="Failed to kill the emulator.")
+        """Stop running emulator instance.
+        
+        Args:
+            buffer (float, optional): Buffer wait after kill. Defaults to 5.
+        """
+        if not self._is_running():
+            return
+        with console.status("Killing emulator", spinner_style="red"):
+            if emulator_ := self._emulator_window():
+                emulator_.close()
+            if console_ := self._console_window():
+                console_.close()
+            started_at = datetime.now()
+            while self._windows_exists():
+                wait_in_loop(started_at, wait=60, err_msg="Failed to kill the emulator.")
 
     def restart(self, buffer: float = 5):
         """Restart the emulator instance.
@@ -64,9 +76,11 @@ class Emulator:
         Args:
             buffer (float, optional): Buffer wait between stop and start. Defaults to 5.
         """
-        if self._is_running():
-            self.stop()
-            sleep(buffer)
+        buffer_required = self._is_running()
+        self.stop()
+        if buffer_required:
+            with console.status("Cleaning RAM", spinner_style="yellow"):
+                sleep(buffer)
         self.start()
 
     def snap_to_zone(self):
