@@ -15,12 +15,12 @@ class log:
     @staticmethod
     def info(msg: Any) -> None:
         """Log info message."""
-        console.print(f" [[blue]INFO[/]] : {log._handle_new_lines(msg)}")
+        console.print(f"[[blue]INFO[/]]  : {log._handle_new_lines(msg)}")
 
     @staticmethod
     def warn(msg: Any) -> None:
         """Log warning message."""
-        console.print(f" [[yellow]WARN[/]] : {log._handle_new_lines(msg)}")
+        console.print(f"[[yellow]WARN[/]]  : {log._handle_new_lines(msg)}")
 
     @staticmethod
     def error(msg: Any) -> None:
