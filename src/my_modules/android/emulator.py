@@ -27,6 +27,7 @@ class Emulator:
         self.serial: str = serial
         self.console: str = "emulator-console"
         self.window: str = f"Android Emulator - {self.serial.replace('-', ':')}"
+        self.device: Device = cast(Device, None)
 
     def start(self, buffer: float = 5):
         """Start emulator as a separate process.
@@ -102,8 +103,10 @@ class Emulator:
 
     def get_device(self) -> Device:
         """Start emulator if not running and return uiautomator2 Device instance."""
-        self.start()
-        return Device(self.serial)
+        if not self.device:
+            self.start()
+            self.device = Device(self.serial)
+        return self.device
 
     def _is_running(self) -> bool:
         """Checks if emulator instance is up and running."""
