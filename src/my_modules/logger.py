@@ -16,6 +16,11 @@ class log:
     def info(msg: Any) -> None:
         """Log info message."""
         console.print(f"[[blue]INFO[/]]  : {log._handle_new_lines(msg)}")
+        
+    @staticmethod
+    def debug(msg: Any) -> None:
+        """Log debug message."""
+        console.print(f"[[green]DEBUG[/]]  : {log._handle_new_lines(msg)}")
 
     @staticmethod
     def warn(msg: Any) -> None:

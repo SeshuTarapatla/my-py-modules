@@ -30,6 +30,16 @@ class UiObject(_UiObject):
     def height(self) -> int:
         _,y1,_,y2 = self.bounds()
         return y2-y1
+    
+    def width(self) -> int:
+        x1,_,x2,_ = self.bounds()
+        return x2-x1
+    
+    def dimensions(self) -> tuple[int, int]:
+        x1,y1,x2,y2 = self.bounds()
+        width = x2-x1
+        height = y2-y1
+        return (width, height)
 
     def sibling(self, resourceId: str = "", *, text: str = "", description: str = "", **kwargs):
         kwargs = __handle_kwargs__(resourceId, text, description, **kwargs)
@@ -85,8 +95,8 @@ class Device(_Device):
             batch (list[UiObject]): ui elements in list.
             duration (float, optional): swipe duration in seconds. Defaults to 1.
         """        
-        if len(batch) <= 2:
+        if len(batch) < 2:
             return
         first = batch[0]
-        last = batch[-2]  # -1 index ignored
+        last = batch[-1]
         self.swipe(*last.center(), *first.center(), duration=duration)
