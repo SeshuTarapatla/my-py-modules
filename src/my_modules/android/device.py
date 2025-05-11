@@ -22,19 +22,28 @@ def __handle_kwargs__(
 class UiObject(_UiObject):
     def __init__(self, session, selector: Selector):
         super().__init__(session, selector)
+        self._bounds = None
     
     def __getitem__(self, instance: int):
         object = super().__getitem__(instance)
         return UiObject(object.session, object.selector)
+
+    def bounds(self) -> tuple[int, int, int, int]:
+        if not self._bounds:
+            self._bounds = super().bounds()
+        return self._bounds
     
+    @property
     def height(self) -> int:
         _,y1,_,y2 = self.bounds()
         return y2-y1
     
+    @property
     def width(self) -> int:
         x1,_,x2,_ = self.bounds()
         return x2-x1
     
+    @property
     def dimensions(self) -> tuple[int, int]:
         x1,y1,x2,y2 = self.bounds()
         width = x2-x1
@@ -45,6 +54,12 @@ class UiObject(_UiObject):
         kwargs = __handle_kwargs__(resourceId, text, description, **kwargs)
         object = super().sibling(**kwargs)
         return UiObject(object.session, object.selector)
+
+    def get_text(self, timeout=None, default: str = ""):
+        if self.exists:
+            return super().get_text(timeout)
+        else:
+            return default
 
 
 class Device(_Device):
