@@ -9,9 +9,12 @@ __all__ = ["log", "console", "get_rich_logger"]
 
 
 class CustomRichHandler(RichHandler):
-    def render_message(self, record: logging.LogRecord, message: Text) -> ConsoleRenderable:
+    def render_message(
+        self, record: logging.LogRecord, message: Text
+    ) -> ConsoleRenderable:
         renderable_message = cast(ConsoleRenderable, message)
         return renderable_message
+
 
 def get_rich_logger(
     name: str | None = None,
