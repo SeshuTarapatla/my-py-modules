@@ -46,7 +46,7 @@ def get_rich_logger(
     logger.setLevel(level=log_level)
     # rich handler
     rich_handler: RichHandler = CustomRichHandler(
-        console=console, show_time=False, markup=True
+        console=console, show_time=False, markup=True, show_path=False
     )
     # inject handler
     rich_handler.setLevel(level=log_level)
